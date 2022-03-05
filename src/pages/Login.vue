@@ -66,7 +66,7 @@ export default {
     },
     methods: {
         submitLogin(item = {}) {
-            api.adminLogin(item)
+            api.merchantLogin(item)
                 .then(async response => {
                     if (200 === response.status) {
                         // 保存Token
@@ -80,7 +80,7 @@ export default {
                     }
                 })
                 .then(() => {
-                    api.getAdminProfile().then(async response => {
+                    api.getMerchantProfile().then(async response => {
                         const respData = await response.json();
                         elmManageStorage.save({
                             user_name: respData.user_name,

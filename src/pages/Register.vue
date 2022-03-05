@@ -70,7 +70,7 @@ export default {
   methods: {
     submitRegister(item = {}) {
       api
-        .adminRegister(item)
+        .merchantRegister(item)
         .then(async response => {
           if (201 === response.status) {
             this.$message({
