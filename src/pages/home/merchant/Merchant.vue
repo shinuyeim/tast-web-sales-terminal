@@ -50,6 +50,7 @@
                     label="店铺名称"
                     min-width="100"
                     sortable
+                    align="center"
                 >
                     <template slot-scope="scope">
                         <!-- el-checkbox 多选框，checked 绑定是否选中，click 绑定点击事件 -->
@@ -67,11 +68,13 @@
                     label="注册日期"
                     min-width="100"
                     sortable
+                    align="center"
                 ></el-table-column>
                 <el-table-column
                     prop="phone"
                     label="联系电话"
                     min-width="100"
+                    align="center"
                 ></el-table-column>
                 <el-table-column label="店铺介绍" min-width="100">
                     <template slot-scope="scope">
@@ -91,11 +94,13 @@
                     prop="delivery_cost"
                     label="配送费"
                     min-width="100"
+                    align="center"
                 ></el-table-column>
                 <el-table-column
                     prop="min_delivery_price"
                     label="最小配送费"
                     min-width="100"
+                    align="center"
                 ></el-table-column>
                 <el-table-column label="操作" width="200">
                     <template slot-scope="scope">

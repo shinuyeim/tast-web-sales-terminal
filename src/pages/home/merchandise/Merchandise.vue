@@ -50,6 +50,7 @@
           label="商品名称"
           min-width="100"
           sortable
+          align="center"
         >
           <template slot-scope="scope">
             <!-- el-checkbox 多选框，checked 绑定是否选中，click 绑定点击事件 -->
@@ -62,37 +63,37 @@
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column
-          prop="register_date"
-          label="注册日期"
+        <el-table-column
+          prop="productionDate"
+          label="生产日期"
           min-width="100"
           sortable
-        ></el-table-column> -->
-        <el-table-column
-          prop="qrcode"
-          label="二维码"
-          min-width="100"
+          align="center"
         ></el-table-column>
-        <el-table-column label="商品介绍" min-width="100">
-          <template slot-scope="scope">
-            <el-popover trigger="hover" placement="top" width="500">
-              <p>商品名称: {{ scope.row.name }}</p>
-              <p>生产厂家: {{ scope.row.manufacturer }}</p>
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.name }}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
+        <el-table-column
+          prop="shelfLife"
+          label="保质期（月）"
+          min-width="100"
+          sortable
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="manufacturer"
+          label="生产厂家"
+          min-width="100"
+          align="center"
+        ></el-table-column>
         <el-table-column
           prop="price"
-          label="价格"
+          label="价格（￥）"
           min-width="100"
+          align="center"
         ></el-table-column>
         <el-table-column
           prop="specs"
           label="规格"
           min-width="100"
+          align="center"
         ></el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
@@ -140,15 +141,54 @@
         >
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="价格" :label-width="formLabelWidth" prop="price">
+        <el-form-item
+          label="生产日期"
+          :label-width="formLabelWidth"
+          prop="productionDate"
+        >
+          <!-- 里面装载表单元素，这里装了个选择日期的组件，v-model 绑定选择值，value-format设置绑定值的格式，type 设置选择的范围，这里 date 表示到天 -->
+          <el-date-picker
+            v-model="form.productionDate"
+            value-format="yyyy-MM-dd"
+            type="date"
+            placeholder="商品生产日期"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item
+          label="保质期（月）"
+          :label-width="formLabelWidth"
+          prop="shelfLife"
+        >
+          <el-input v-model="form.shelfLife"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="生产厂家"
+          :label-width="formLabelWidth"
+          prop="manufacturer"
+        >
+          <el-input v-model="form.manufacturer"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="价格（￥）"
+          :label-width="formLabelWidth"
+          prop="price"
+        >
           <el-input v-model="form.price"></el-input>
         </el-form-item>
         <el-form-item
-          label="二维码"
+          label="产品规格"
           :label-width="formLabelWidth"
-          prop="qrcode"
+          prop="specs"
         >
-          <el-input v-model="form.qrcode"></el-input>
+          <el-select v-model="value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
 
@@ -163,19 +203,7 @@
       <!-- model 绑定表单对象，rules 绑定表单规则，ref 用来校验规则 -->
       <el-form :model="form" status-icon :rules="formUpdateRules" ref="form">
         <!-- el-form-item 绑定表单样式，label 表单的名称，formLabelWidth 设置 label 的宽度, 设置 prop 来进行规则校验 -->
-        <!-- <el-form-item
-          label="日期"
-          :label-width="formLabelWidth"
-          prop="register_date"
-        > -->
-        <!-- 里面装载表单元素，这里装了个选择日期的组件，v-model 绑定选择值，value-format设置绑定值的格式，type 设置选择的范围，这里 date 表示到天 -->
-        <!-- <el-date-picker
-            v-model="form.register_date"
-            value-format="yyyy-MM-dd"
-            type="date"
-            placeholder="注册日期"
-          ></el-date-picker>
-        </el-form-item> -->
+
         <el-form-item
           label="商品名称"
           :label-width="formLabelWidth"
@@ -183,11 +211,25 @@
         >
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="价格" :label-width="formLabelWidth" prop="price">
-          <el-input v-model="form.price"></el-input>
+        <el-form-item
+          label="生产日期"
+          :label-width="formLabelWidth"
+          prop="productionDate"
+        >
+          <!-- 里面装载表单元素，这里装了个选择日期的组件，v-model 绑定选择值，value-format设置绑定值的格式，type 设置选择的范围，这里 date 表示到天 -->
+          <el-date-picker
+            v-model="form.productionDate"
+            value-format="yyyy-MM-dd"
+            type="date"
+            placeholder="请填写生产日期"
+          ></el-date-picker>
         </el-form-item>
-        <el-form-item label="规格" :label-width="formLabelWidth" prop="specs">
-          <el-input v-model="form.specs"></el-input>
+        <el-form-item
+          label="保质期（月）"
+          :label-width="formLabelWidth"
+          prop="shelfLife"
+        >
+          <el-input v-model="form.shelfLife"></el-input>
         </el-form-item>
         <el-form-item
           label="生产厂家"
@@ -196,20 +238,25 @@
         >
           <el-input v-model="form.manufacturer"></el-input>
         </el-form-item>
-        <!-- <el-form-item
-          label="配送费"
-          :label-width="formLabelWidth"
-          prop="delivery_cost"
-        >
-          <el-input v-model="form.delivery_cost"></el-input>
+        <el-form-item label="价格" :label-width="formLabelWidth" prop="price">
+          <el-input v-model="form.price"></el-input>
         </el-form-item>
+
         <el-form-item
-          label="最小配送费"
+          label="产品规格"
           :label-width="formLabelWidth"
-          prop="min_delivery_price"
+          prop="specs"
         >
-          <el-input v-model="form.min_delivery_price"></el-input>
-        </el-form-item> -->
+          <el-select v-model="value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
@@ -227,80 +274,68 @@
 import * as api from "@/api/index.js";
 import moment from "moment";
 import eachLimit from "async/eachLimit";
-import { formValidatePassword, formValidateUsername } from "@/utils/validator";
+//import { formValidatePassword, formValidateUsername } from "@/utils/validator";
 
 // 下面是 Vue 组件
 export default {
   data() {
-    const validatePass = (rule, value, callback) => {
-      if (this.form.checkPass !== "") {
-        this.$refs.form.validateField("checkPass");
-      }
-      callback();
-    };
-    const validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.form.password) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
+    // const validatePass = (rule, value, callback) => {
+    //   if (this.form.checkPass !== "") {
+    //     this.$refs.form.validateField("checkPass");
+    //   }
+    //   callback();
+    // };
+    // const validatePass2 = (rule, value, callback) => {
+    //   if (value === "") {
+    //     callback(new Error("请再次输入密码"));
+    //   } else if (value !== this.form.password) {
+    //     callback(new Error("两次输入密码不一致!"));
+    //   } else {
+    //     callback();
+    //   }
+    // };
     return {
+      // 用作表单绑定的内容
       form: {
-        user_name: "",
-        password: "",
-        checkPass: "",
-      }, // 用作表单绑定的内容
+        // user_name: "",
+        // password: "",
+        //checkPass: "",
+        productionDate: "",
+        specs: "",
+        shelfLife: "",
+        manufacturer: "",
+        price: "",
+        name: "",
+      },
+      value: "",
+      options: [
+        {
+          value: "选项1",
+          label: "盒",
+        },
+        {
+          value: "选项2",
+          label: "瓶",
+        },
+        {
+          value: "选项3",
+          label: "袋",
+        },
+      ],
+
       formNewRules: {
-        user_name: [
+        productionDate: [
           {
+            type: "data",
             required: true,
-            validator: formValidateUsername,
-            trigger: "blur",
-          },
-        ],
-        password: [
-          {
-            required: true,
-            validator: formValidatePassword,
-            trigger: "blur",
-          },
-          { validator: validatePass, trigger: "blur" },
-        ],
-        checkPass: [
-          {
-            required: true,
-            message: "请再次输入密码",
+            message: "请选择生产日期",
             trigger: "change",
           },
-          { validator: validatePass2, trigger: "blur" },
         ],
-      },
-      loading: true,
-      tableData: [],
-      totalCount: 0,
-      dialogFormNewVisible: false, // 弹窗是否出现
-      dialogFormUpdateVisible: false, // 弹窗是否出现
-      currentPage: 1,
-      pageSize: 20,
-      formLabelWidth: "120px", // 表单 label 的宽度
-      showDeleteCheckbox: false, // 是否批量删除
-      chosenItem: [], // 选中的选项
-      formUpdateRules: {
-        // register_date: [
-        //   {
-        //     type: "string",
-        //     required: true,
-        //     message: "请选择注册日期",
-        //     trigger: "change",
-        //   },
-        // ],
         name: [
           {
             required: true,
-            message: "请输入店铺名称",
+            message: "请输入商品名称",
             trigger: "blur",
           },
           {
@@ -319,7 +354,7 @@ export default {
         ],
         specs: [
           {
-            required: true,
+            //required: true,
             message: "请输入商品规格",
             trigger: "blur",
           },
@@ -331,18 +366,74 @@ export default {
             trigger: "blur",
           },
         ],
-        // delivery_cost: [
-        //   {
-        //     message: "配送费",
-        //     trigger: "blur",
-        //   },
-        // ],
-        // min_delivery_price: [
-        //   {
-        //     message: "最小配送费",
-        //     trigger: "blur",
-        //   },
-        // ],
+        shelfLife: [
+          {
+            required: true,
+            message: "请输入保质期",
+            trigger: "blur",
+          },
+        ],
+      },
+      loading: true,
+      tableData: [],
+      totalCount: 0,
+      dialogFormNewVisible: false, // 弹窗是否出现
+      dialogFormUpdateVisible: false, // 弹窗是否出现
+      currentPage: 1,
+      pageSize: 20,
+      formLabelWidth: "120px", // 表单 label 的宽度
+      showDeleteCheckbox: false, // 是否批量删除
+      chosenItem: [], // 选中的选项
+      formUpdateRules: {
+        productionDate: [
+          {
+            type: "data",
+            required: true,
+            message: "请选择生产日期",
+            trigger: "change",
+          },
+        ],
+        name: [
+          {
+            required: true,
+            message: "请输入商品名称",
+            trigger: "blur",
+          },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字",
+            trigger: "blur",
+          },
+        ],
+        price: [
+          {
+            required: true,
+            message: "请输入商品价格",
+            trigger: "blur",
+          },
+        ],
+        specs: [
+          {
+            //required: true,
+            message: "请输入商品规格",
+            trigger: "blur",
+          },
+        ],
+        manufacturer: [
+          {
+            required: true,
+            message: "请输入生产厂家",
+            trigger: "blur",
+          },
+        ],
+        shelfLife: [
+          {
+            required: true,
+            message: "请输入保质期",
+            trigger: "blur",
+          },
+        ],
       },
     };
   },
@@ -509,7 +600,7 @@ export default {
     shownData() {
       return this.tableData.map((item) => {
         return Object.assign(item, {
-          register_date: moment(item.register_date).format("YYYY-MM-DD"),
+          productionDate: moment(item.register_date).format("YYYY-MM-DD"),
         });
       });
     },

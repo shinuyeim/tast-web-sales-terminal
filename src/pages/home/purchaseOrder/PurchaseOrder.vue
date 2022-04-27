@@ -43,45 +43,29 @@
         style="width: 100%"
         :default-sort="{ prop: 'register_date', order: 'descending' }"
       >
-        <!-- <el-table-column prop="_id" label="id" width="100" sortable></el-table-column> -->
-        <el-table-column
-          fixed
-          prop="name"
-          label="顾客名称"
-          min-width="80"
-          sortable
-          align="center"
-        >
-          <template slot-scope="scope">
-            <!-- el-checkbox 多选框，checked 绑定是否选中，click 绑定点击事件 -->
-            <el-checkbox
-              v-if="showDeleteCheckbox"
-              :checked="chosenItem.indexOf(scope.row._id) > -1"
-              @change="toggleChosenItem(scope.row._id)"
-              style="margin-right: 5px"
-            ></el-checkbox>
-            <span>{{ scope.row.name }}</span>
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="demo-table-expand">
+              <!-- <el-form-item label="订单编号">
+                <span>{{ props.row._id }}</span>
+              </el-form-item> -->
+              <!-- <el-form-item label="商品名称">
+                <span>{{ props.row.name }}</span>
+              </el-form-item> -->
+              <el-form-item label="所属商家">
+                <span>{{ props.row.shop }}</span>
+              </el-form-item>
+
+              <el-form-item label="规格">
+                <span>{{ props.row.shopId }}</span>
+              </el-form-item>
+            </el-form>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="register_date"
-          label="注册日期"
-          min-width="100"
-          sortable
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="phone"
-          label="联系电话"
-          min-width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="address"
-          label="收货地址"
-          min-width="120"
-          align="center"
-        ></el-table-column>
+        <el-table-column label="订单编号" prop="_id"> </el-table-column>
+        <el-table-column label="商品名称" prop="name"> </el-table-column>
+        <el-table-column label="单价" prop="price" width="200"> </el-table-column>
+        <el-table-column label="数量" prop="count" width="200"> </el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <!-- 删除过程中，禁用其他操作 -->
@@ -121,57 +105,21 @@
     <el-dialog title="新增" :visible.sync="dialogFormNewVisible">
       <!-- model 绑定表单对象，rules 绑定表单规则，ref 用来校验规则 -->
       <el-form :model="form" status-icon :rules="formNewRules" ref="form">
-        <el-form-item
-          label="用户名"
-          :label-width="formLabelWidth"
-          prop="user_name"
-        >
-          <el-input v-model="form.user_name"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="你的姓名"
-          :label-width="formLabelWidth"
-          prop="name"
-        >
+        <el-form-item label="批发商" :label-width="formLabelWidth" prop="name">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item
-          label="密码"
+          label="订单日期"
           :label-width="formLabelWidth"
-          prop="password"
+          prop="register_date"
         >
-          <el-input
-            v-model="form.password"
-            type="password"
-            show-password
-          ></el-input>
-        </el-form-item>
-        <el-form-item
-          label="确认密码"
-          :label-width="formLabelWidth"
-          prop="checkPass"
-        >
-          <el-input
-            v-model="form.checkPass"
-            type="password"
-            show-password
-          ></el-input>
-        </el-form-item>
-
-        <el-form-item
-          label="联系电话"
-          :label-width="formLabelWidth"
-          prop="phone"
-        >
-          <el-input v-model="form.phone"></el-input>
-        </el-form-item>
-
-        <el-form-item
-          label="你的地址"
-          :label-width="formLabelWidth"
-          prop="address"
-        >
-          <el-input v-model="form.address"></el-input>
+          <el-date-picker
+            v-model="form.register_date"
+            value-format="yyyy-MM-dd"
+            type="date"
+            placeholder="注册日期"
+          ></el-date-picker>
+          <!-- <el-input v-model="form.register_date"></el-input> -->
         </el-form-item>
       </el-form>
 
@@ -187,11 +135,10 @@
       <el-form :model="form" status-icon :rules="formUpdateRules" ref="form">
         <!-- el-form-item 绑定表单样式，label 表单的名称，formLabelWidth 设置 label 的宽度, 设置 prop 来进行规则校验 -->
         <el-form-item
-          label="日期"
+          label="订单日期"
           :label-width="formLabelWidth"
           prop="register_date"
         >
-          <!-- 里面装载表单元素，这里装了个选择日期的组件，v-model 绑定选择值，value-format设置绑定值的格式，type 设置选择的范围，这里 date 表示到天 -->
           <el-date-picker
             v-model="form.register_date"
             value-format="yyyy-MM-dd"
@@ -199,12 +146,21 @@
             placeholder="注册日期"
           ></el-date-picker>
         </el-form-item>
+
         <el-form-item
-          label="用户名称"
+          label="店铺名称"
           :label-width="formLabelWidth"
           prop="name"
         >
           <el-input v-model="form.name"></el-input>
+        </el-form-item>
+
+        <el-form-item label="数量" :label-width="formLabelWidth" prop="amounts">
+          <el-input v-model="form.amounts"></el-input>
+        </el-form-item>
+
+        <el-form-item label="价格" :label-width="formLabelWidth" prop="prices">
+          <el-input v-model="form.prices"></el-input>
         </el-form-item>
         <el-form-item
           label="联系电话"
@@ -214,7 +170,7 @@
           <el-input v-model="form.phone"></el-input>
         </el-form-item>
         <el-form-item
-          label="收货地址"
+          label="店铺地址"
           :label-width="formLabelWidth"
           prop="address"
         >
@@ -233,87 +189,31 @@
 </template>
 
 <script>
-// import tableData from "./CustomerData.js";
+// import tableData from "./merchantData.js";
 import * as api from "@/api/index.js";
 import moment from "moment";
 import eachLimit from "async/eachLimit";
-import {
-  formValidatePassword,
-  formValidateUsername,
-  formValidatePhone,
-} from "@/utils/validator";
+import { formValidatePhone } from "@/utils/validator";
 
 // 下面是 Vue 组件
 export default {
   data() {
-    const validatePass = (rule, value, callback) => {
-      if (this.form.checkPass !== "") {
-        this.$refs.form.validateField("checkPass");
-      }
-      callback();
-    };
-    const validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.form.password) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
     return {
       form: {
-        user_name: "",
-        password: "",
-        checkPass: "",
+        _id: "",
         name: "",
-        address: "",
-        phone: "",
-      }, // 用作表单绑定的内容
+        // prices: "",
+        // amounts: "",
+      },
+      // 用作表单绑定的内容
       formNewRules: {
-        user_name: [
-          {
-            required: true,
-            validator: formValidateUsername,
-            trigger: "blur",
-          },
-        ],
-        password: [
-          {
-            required: true,
-            validator: formValidatePassword,
-            trigger: "blur",
-          },
-          { validator: validatePass, trigger: "blur" },
-        ],
-        checkPass: [
-          {
-            required: true,
-            message: "请再次输入密码",
-            trigger: "change",
-          },
-          { validator: validatePass2, trigger: "blur" },
-        ],
-        name: [
-          {
-            required: true,
-            message: "请输入你的姓名",
-            trigger: "blur",
-          },
-        ],
-        address: [
-          {
-            required: true,
-            message: "请输入你地址",
-            trigger: "blur",
-          },
-        ],
         phone: [
           {
             required: true,
             validator: formValidatePhone,
             trigger: "blur",
           },
+          //{ validator: validatePass, trigger: "blur" },
         ],
       },
       loading: true,
@@ -338,7 +238,7 @@ export default {
         name: [
           {
             required: true,
-            message: "请输入用户名称",
+            message: "请输入店铺名称",
             trigger: "blur",
           },
           {
@@ -348,17 +248,31 @@ export default {
             trigger: "blur",
           },
         ],
-        phone: [
+        amounts: [
           {
             required: true,
-            message: "请输入联系电话",
+            message: "请选择数量",
+            trigger: "blur",
+          },
+        ],
+        prices: [
+          {
+            required: true,
+            message: "请输入价格",
             trigger: "blur",
           },
         ],
         address: [
           {
             required: true,
-            message: "请输入收货地址",
+            message: "请输入店铺地址",
+            trigger: "blur",
+          },
+        ],
+        phone: [
+          {
+            required: true,
+            message: "请输入店铺联系电话",
             trigger: "blur",
           },
         ],
@@ -366,7 +280,7 @@ export default {
     };
   },
   mounted() {
-    this.getCustomer();
+    this.getPurchaseOrder();
   },
   methods: {
     // 新增/修改一个数据
@@ -376,11 +290,12 @@ export default {
         const id = item._id;
         delete item._id;
         api
-          .updataCustomerById(id, item)
+          .updataPurchaseOrderById(id, item)
           .then((response) => {
             if (response.ok) {
               this.$message({
                 message: "Update sucess",
+
                 type: "success",
               });
             } else {
@@ -394,11 +309,11 @@ export default {
             console.error(error);
           })
           .finally(() => {
-            this.getCustomer();
+            this.getPurchaseOrder();
           });
       } else {
         api
-          .createCustomer(item)
+          .createPurchaseOrder(item)
           .then(async (response) => {
             if (response.ok) {
               this.$message({
@@ -418,7 +333,7 @@ export default {
             });
           })
           .finally(() => {
-            this.getCustomer();
+            this.getPurchaseOrder();
           });
       }
     },
@@ -430,7 +345,7 @@ export default {
         3,
         (idItem, cb) => {
           api
-            .deleteCustomerById(idItem)
+            .deletePurchaseOrderById(idItem)
             .then(async (response) => {
               if (response.ok) {
                 this.$message({
@@ -451,7 +366,7 @@ export default {
             })
             .finally(cb);
         },
-        this.getCustomer()
+        this.getPurchaseOrder()
       );
     },
     // 切换选中的选项
@@ -482,16 +397,16 @@ export default {
     },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
-      this.getCustomer();
+      this.getPurchaseOrder();
     },
     handleCurrentChange(currentPage) {
       this.currentPage = currentPage;
-      this.getCustomer();
+      this.getPurchaseOrder();
     },
-    getCustomer() {
+    getPurchaseOrder() {
       this.loading = true;
       api
-        .getCustomerList({
+        .getPurchaseOrderList({
           offset: this.startIndex,
           limit: this.pageSize,
         })
@@ -536,4 +451,17 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
+</style>

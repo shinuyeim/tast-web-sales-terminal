@@ -13,6 +13,7 @@ import Admin from "../pages/home/admin/Admin.vue";
 import Merchant from "../pages/home/merchant/Merchant.vue";
 import Customer from "../pages/home/customer/Customer.vue";
 import Merchandise from "../pages/home/merchandise/Merchandise.vue";
+import PurchaseOrder from "../pages/home/purchaseOrder/PurchaseOrder.vue";
 /**
  * 路由关系：
  * /login                     /home                     /home/service  
@@ -68,7 +69,8 @@ const routes = [
                     { path: "admin", component: Admin, name: "Admin" },
                     { path: "merchant", component: Merchant, name: "Merchant" },
                     { path: "customer", component: Customer, name: "Customer" },
-                    { path: "merchandise", component: Merchandise, name: "Merchandise" }
+                    { path: "merchandise", component: Merchandise, name: "Merchandise" },
+                    { path: "purchaseOrder", component: PurchaseOrder, name: "PurchaseOrder" }
                 ]
             }
         ]

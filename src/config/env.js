@@ -7,7 +7,8 @@
  * 
  */
 //let baseUrl = 'http://localhost:3000/api/v1'; 
-let baseUrl = 'http://192.168.241.178:3000/api/v1';
+//let baseUrl = 'http://192.168.16.178:3000/api/v1';
+let baseUrl = 'http://172.26.86.113:3000/api/v1';
 
 let routerMode = 'hash';
 // let baseImgPath;

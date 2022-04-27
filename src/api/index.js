@@ -23,6 +23,7 @@ export const merchantRegister = (body) => {
 //     return fetchWrapper(url, { headers });
 // };
 
+// 获取商家信息
 export const getMerchantProfile = () => {
     const url = "/merchants/profile";
     const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
@@ -30,19 +31,19 @@ export const getMerchantProfile = () => {
 };
 
 // //获取管理员列表
-// export const getAdminList = (querys) => {
-//     const url = "/admins";
+export const getAdminList = (querys) => {
+    const url = "/admins";
 
-//     const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
-//     return fetchWrapper(url, { querys, headers });
-// };
-// //删除管理员
-// export const deleteAdminById = (id) => {
-//     const url = "/admins/" + id;
+    const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
+    return fetchWrapper(url, { querys, headers });
+};
+//删除管理员
+export const deleteAdminById = (id) => {
+    const url = "/admins/" + id;
 
-//     const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
-//     return fetchWrapper(url, { method: "DELETE", headers });
-// };
+    const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
+    return fetchWrapper(url, { method: "DELETE", headers });
+};
 
 /**
  * 商家
@@ -138,10 +139,57 @@ export const updataMerchandisesById = (id, body) => {
     return fetchWrapper(url, { method: "PUT", body, headers });
 };
 
-//删除商家
+//删除商品
 export const deleteMerchandisesById = (id) => {
     const url = "/merchandises/" + id;
 
     const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
     return fetchWrapper(url, { method: "DELETE", headers });
+};
+
+/**
+ * 进货单
+ */
+
+//获取进货单列表
+export const getPurchaseOrderList = (querys) => {
+    const url = "/purchaseOrders";
+    const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
+    return fetchWrapper(url, { querys, headers });
+};
+
+//新增进货单
+export const createPurchaseOrder = (body) => {
+    const url = "/purchaseOrders";
+
+    const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
+    return fetchWrapper(url, { method: "POST", body, headers });
+};
+
+//更新进货单信息
+export const updataPurchaseOrderById = (id, body) => {
+    const url = "/purchaseOrders/" + id;
+
+    const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
+    return fetchWrapper(url, { method: "PUT", body, headers });
+};
+
+//删除进货单
+export const deletePurchaseOrderById = (id) => {
+    const url = "/purchaseOrders/" + id;
+
+    const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
+    return fetchWrapper(url, { method: "DELETE", headers });
+};
+
+
+/**
+ * 进货单Item
+ */
+//### 获取进货单详情
+export const getpurchaseOrdersItem = (id) => {
+    const url = "/purchaseOrdersItem/purchaseOrder/" + id;
+
+    const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
+    return fetchWrapper(url, { method: "GET", headers });
 };
