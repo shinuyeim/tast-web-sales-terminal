@@ -76,7 +76,7 @@ const menus = [
       { text: "顾客信息", routerName: "Customer" },
       { text: "商品信息", routerName: "Merchandise" },
       { text: "进货单信息", routerName: "PurchaseOrder" },
-      { text: "销售单信息", routerName: "" },
+      { text: "销售单信息", routerName: "SaleOrder" },
     ], // 子菜单列表
   },
   {

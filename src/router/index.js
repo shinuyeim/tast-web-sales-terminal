@@ -9,12 +9,14 @@ import App from '../App.vue';
 import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue';
 import PurchaseOrderItem from '../pages/PurchaseOrderItem.vue';
+import SaleOrderItem from '../pages/SaleOrderItem.vue';
 import Home from "../pages/home/Home.vue";
 import Admin from "../pages/home/admin/Admin.vue";
 import Merchant from "../pages/home/merchant/Merchant.vue";
 import Customer from "../pages/home/customer/Customer.vue";
 import Merchandise from "../pages/home/merchandise/Merchandise.vue";
 import PurchaseOrder from "../pages/home/purchaseOrder/PurchaseOrder.vue";
+import SaleOrder from "../pages/home/saleOrder/SaleOrder.vue";
 /**
  * 路由关系：
  * /login                     /home                     /home/service  
@@ -69,6 +71,11 @@ const routes = [
                 name: "PurchaseOrderItem" // 路由名称
             },
             {
+                path: "saleOrderItem", // 子路由路径
+                component: SaleOrderItem, // 子路由组件，会替换父组件中<router-view>中的内容
+                name: "SaleOrderItem" // 路由名称
+            },
+            {
                 // 应用首页
                 path: "home", component: Home, name: "Home",
                 children: [
@@ -76,7 +83,8 @@ const routes = [
                     { path: "merchant", component: Merchant, name: "Merchant" },
                     { path: "customer", component: Customer, name: "Customer" },
                     { path: "merchandise", component: Merchandise, name: "Merchandise" },
-                    { path: "purchaseOrder", component: PurchaseOrder, name: "PurchaseOrder" }
+                    { path: "purchaseOrder", component: PurchaseOrder, name: "PurchaseOrder" },
+                    { path: "saleOrder", component: SaleOrder, name: "SaleOrder" }
                 ]
             }
         ]

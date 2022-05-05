@@ -428,7 +428,7 @@ export default {
         const id = item._id;
         delete item._id;
         api
-          .updataPurchaseOrdersItemById(id, item)
+          .updataSaleOrdersItemById(id, item)
           .then((response) => {
             if (response.ok) {
               this.$message({
@@ -450,7 +450,7 @@ export default {
           });
       } else {
         api
-          .createPurchaseOrdersItem(item)
+          .createSaleOrdersItem(item)
           .then(async (response) => {
             if (response.ok) {
               this.$message({
@@ -482,7 +482,7 @@ export default {
         3,
         (idItem, cb) => {
           api
-            .deletePurchaseOrdersItemById(idItem)
+            .deleteSaleOrdersItemById(idItem)
             .then(async (response) => {
               if (response.ok) {
                 this.$message({
@@ -577,7 +577,7 @@ export default {
       //Item里面的订单ID已经获取到
       this.loading = true;
       api
-        .getPurchaseOrderMerchandisesItemList(id, {
+        .getSaleOrderMerchandisesItemList(id, {
           offset: this.startIndex,
           limit: this.pageSize,
         })
