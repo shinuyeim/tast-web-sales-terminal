@@ -15,13 +15,6 @@ export const merchantRegister = (body) => {
     return fetchWrapper(url, { method: "POST", body });
 };
 
-//获取管理员信息
-// export const getAdminProfile = () => {
-//     const url = "/admins/profile";
-
-//     const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
-//     return fetchWrapper(url, { headers });
-// };
 
 // 获取商家信息
 export const getMerchantProfile = () => {
@@ -302,3 +295,17 @@ export const deleteSaleOrdersItemById = (id) => {
     return fetchWrapper(url, { method: "DELETE", headers });
 };
 
+//根据进货单内的批发商ID查村批发商信息
+export const getWholesalerByPurchOrderId = (id, querys) => {
+    const url = "/wholesalers/" + id;
+
+    const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
+    return fetchWrapper(url, { querys, headers });
+}
+
+export const getCustomerByPurchOrderId = (id, querys) => {
+    const url = "/customers/" + id;
+
+    const headers = { Authorization: "Bearer " + elmManageStorage.fetch("token") };
+    return fetchWrapper(url, { querys, headers });
+}

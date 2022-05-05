@@ -540,11 +540,8 @@ export default {
       this.currentPage = currentPage;
       this.getMerchandisesItem();
     },
-    getMerchandies(orditem) {
-      // this.loading = true;
-      //console.log(orditem);
+    getMerchandies(orditem) { 
       const merchandiseID = orditem.merchandises;
-      //console.log(merchandiseID);
       api
         .getMerchandisesInfo(merchandiseID)
         .then(async (response) => {
@@ -593,12 +590,6 @@ export default {
             throw respData;
           }
         })
-        // .then((jsonData) => {
-        //   this.totalCount = jsonData.metadata.Total;
-        //   console.log(this.totalCount);
-        //   this.tableData = jsonData.data;
-        //   //console.log(this.tableData);
-        // })
         .then((jsonData) => {
           let itemList = jsonData.data;
           for (let index = 0; index < itemList.length; index++) {

@@ -41,7 +41,7 @@
         stripe
         :data="shownData"
         style="width: 100%"
-        :default-sort="{ prop: 'register_date', order: 'descending' }"
+        :default-sort="{ prop: 'productionDate', order: 'descending' }"
       >
         <!-- <el-table-column prop="_id" label="id" width="100" sortable></el-table-column> -->
         <el-table-column
@@ -146,8 +146,8 @@
           :label-width="formLabelWidth"
           prop="productionDate"
         > -->
-          <!-- 里面装载表单元素，这里装了个选择日期的组件，v-model 绑定选择值，value-format设置绑定值的格式，type 设置选择的范围，这里 date 表示到天 -->
-          <!-- <el-date-picker
+        <!-- 里面装载表单元素，这里装了个选择日期的组件，v-model 绑定选择值，value-format设置绑定值的格式，type 设置选择的范围，这里 date 表示到天 -->
+        <!-- <el-date-picker
             v-model="form.productionDate"
             value-format="yyyy-MM-dd"
             type="date"
@@ -222,6 +222,7 @@
             value-format="yyyy-MM-dd"
             type="date"
             placeholder="请填写生产日期"
+            :picker-options="pickerOptions"
           ></el-date-picker>
         </el-form-item>
         <el-form-item
@@ -429,6 +430,35 @@ export default {
             required: true,
             message: "请输入保质期",
             trigger: "blur",
+          },
+        ],
+      },
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [
+          {
+            text: "今天",
+            onClick(picker) {
+              picker.$emit("pick", new Date());
+            },
+          },
+          {
+            text: "昨天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit("pick", date);
+            },
+          },
+          {
+            text: "一周前",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", date);
+            },
           },
         ],
       },

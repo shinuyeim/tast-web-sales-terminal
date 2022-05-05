@@ -41,7 +41,7 @@
         stripe
         :data="shownData"
         style="width: 100%"
-        :default-sort="{ prop: 'register_date', order: 'descending' }"
+        :default-sort="{ prop: 'date', order: 'descending' }"
         ><el-table-column
           prop="_id"
           label="订单编号"
@@ -50,19 +50,40 @@
           align="center"
         ></el-table-column>
         <el-table-column
-          prop="customer"
+          prop="date"
+          label="订单日期"
+          min-width="100"
+          sortable
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="name"
           label="顾客"
           min-width="100"
           sortable
           align="center"
         ></el-table-column>
+        <el-table-column
+          prop="address"
+          label="顾客地址"
+          min-width="80"
+          sortable
+          align="center"
+        ></el-table-column
+        ><el-table-column
+          prop="phone"
+          label="顾客联系方式"
+          min-width="80"
+          sortable
+          align="center"
+        ></el-table-column>
         <!-- <el-table-column label="订单编号" prop="_id"> </el-table-column>
         <el-table-column label="商品名称" prop="name"> </el-table-column> -->
-        <el-table-column label="单价" prop="price" width="200">
+        <el-table-column label="单价" prop="price" width="70">
         </el-table-column>
-        <el-table-column label="数量" prop="count" width="200">
+        <el-table-column label="数量" prop="count" width="70">
         </el-table-column>
-        <el-table-column label="操作" width="300">
+        <el-table-column label="操作" width="220">
           <template slot-scope="scope">
             <!-- 删除过程中，禁用其他操作 -->
             <el-button
@@ -108,19 +129,19 @@
     <el-dialog title="新增" :visible.sync="dialogFormNewVisible">
       <!-- model 绑定表单对象，rules 绑定表单规则，ref 用来校验规则 -->
       <el-form :model="form" status-icon :rules="formNewRules" ref="form">
-        <el-form-item label="批发商" :label-width="formLabelWidth" prop="name">
+        <!-- <el-form-item label="顾客" :label-width="formLabelWidth" prop="name">
           <el-input v-model="form.name"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item
           label="订单日期"
           :label-width="formLabelWidth"
-          prop="register_date"
+          prop="date"
         >
           <el-date-picker
-            v-model="form.register_date"
+            v-model="form.date"
             value-format="yyyy-MM-dd"
             type="date"
-            placeholder="注册日期"
+            placeholder="若不选则默认为当前日期"
           ></el-date-picker>
           <!-- <el-input v-model="form.register_date"></el-input> -->
         </el-form-item>
@@ -192,12 +213,9 @@
 </template>
 
 <script>
-// import tableData from "./merchantData.js";
-//import { mapMutations } from "vuex";
 import * as api from "@/api/index.js";
 import moment from "moment";
 import eachLimit from "async/eachLimit";
-import { formValidatePhone } from "@/utils/validator";
 
 // 下面是 Vue 组件
 export default {
@@ -206,21 +224,11 @@ export default {
       form: {
         _id: "",
         name: "",
-        // prices: "",
-        // amounts: "",
+        date: "",
       },
-      preventRepeat: false, //防止重复获取
+      //preventRepeat: false, //防止重复获取
       // 用作表单绑定的内容
-      formNewRules: {
-        phone: [
-          {
-            required: true,
-            validator: formValidatePhone,
-            trigger: "blur",
-          },
-          //{ validator: validatePass, trigger: "blur" },
-        ],
-      },
+      formNewRules: {},
       loading: true,
       tableData: [],
       totalCount: 0,
@@ -288,7 +296,6 @@ export default {
     this.getSaleOrder();
   },
   methods: {
-    // ...mapMutations(["SAVE_ORDER"]),
     // 新增/修改一个数据
     updateTableItem(item = {}) {
       // 检查是否有 id，有则更新，没有则新增
@@ -319,7 +326,7 @@ export default {
           });
       } else {
         api
-          .createSaleOrdersItem(item)
+          .createSaleOrder(item)
           .then(async (response) => {
             if (response.ok) {
               this.$message({
@@ -411,7 +418,7 @@ export default {
     },
     getSaleOrder() {
       this.loading = true;
-      this.preventRepeat = false;
+      //this.preventRepeat = false;
       api
         .getSaleOrderList({
           offset: this.startIndex,
@@ -430,8 +437,13 @@ export default {
           }
         })
         .then((jsonData) => {
-          this.totalCount = jsonData.metadata.Total;
-          this.tableData = jsonData.data;
+          let itemList = jsonData.data;
+          for (let index = 0; index < itemList.length; index++) {
+            let orditem = itemList[index];
+            this.getCustomer(orditem);
+          }
+          this.tableData = itemList;
+          //console.log(this.tableData);
         })
         .catch((error) => {
           console.error(error);
@@ -440,10 +452,40 @@ export default {
             type: "error",
           });
         })
-        .finally(() => ((this.loading = false), (this.preventRepeat = false)));
+        .finally(() => (this.loading = false));
     },
     toSaleOrderItem(id) {
       this.$router.push({ name: "SaleOrderItem", query: { id: id } });
+    },
+    getCustomer(orditem) {
+      const customerId = orditem.customer;
+      api
+        .getCustomerByPurchOrderId(customerId)
+        .then(async (response) => {
+          const respData = await response.json();
+          if (response.ok) {
+            // this.$message({
+            //   message: "Get getMerchandisesInfo sucess",
+            //   type: "success",
+            // });
+            return respData;
+          } else {
+            throw respData;
+          }
+        })
+        .then((jsonData) => {
+          //this.totalCount = jsonData.metadata.Total;
+          //console.log(jsonData);
+          Object.assign(orditem, jsonData);
+          //console.log(orditem);
+        })
+        .catch((error) => {
+          console.error(error);
+          this.$message({
+            message: "Get failed",
+            type: "error",
+          });
+        });
     },
   },
   computed: {
@@ -453,7 +495,7 @@ export default {
     shownData() {
       return this.tableData.map((item) => {
         return Object.assign(item, {
-          register_date: moment(item.register_date).format("YYYY-MM-DD"),
+          date: moment(item.date).format("YYYY-MM-DD"),
         });
       });
     },

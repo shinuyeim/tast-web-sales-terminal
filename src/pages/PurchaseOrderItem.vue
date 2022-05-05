@@ -593,12 +593,6 @@ export default {
             throw respData;
           }
         })
-        // .then((jsonData) => {
-        //   this.totalCount = jsonData.metadata.Total;
-        //   console.log(this.totalCount);
-        //   this.tableData = jsonData.data;
-        //   //console.log(this.tableData);
-        // })
         .then((jsonData) => {
           let itemList = jsonData.data;
           for (let index = 0; index < itemList.length; index++) {
@@ -606,7 +600,7 @@ export default {
             this.getMerchandies(orditem);
           }
           this.tableData = itemList;
-          console.log(this.tableData);
+          //console.log(this.tableData);
         })
         .catch((error) => {
           console.error(error);
@@ -632,5 +626,5 @@ export default {
   },
 };
 </script>
-
+ 
 <style></style>
