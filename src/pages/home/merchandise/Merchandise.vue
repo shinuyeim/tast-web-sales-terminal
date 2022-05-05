@@ -141,20 +141,20 @@
         >
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           label="生产日期"
           :label-width="formLabelWidth"
           prop="productionDate"
-        >
+        > -->
           <!-- 里面装载表单元素，这里装了个选择日期的组件，v-model 绑定选择值，value-format设置绑定值的格式，type 设置选择的范围，这里 date 表示到天 -->
-          <el-date-picker
+          <!-- <el-date-picker
             v-model="form.productionDate"
             value-format="yyyy-MM-dd"
             type="date"
             placeholder="商品生产日期"
-          ></el-date-picker>
-        </el-form-item>
-        <el-form-item
+          ></el-date-picker> -->
+        <!-- </el-form-item> -->
+        <!-- <el-form-item
           label="保质期（月）"
           :label-width="formLabelWidth"
           prop="shelfLife"
@@ -167,7 +167,7 @@
           prop="manufacturer"
         >
           <el-input v-model="form.manufacturer"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item
           label="价格（￥）"
           :label-width="formLabelWidth"
@@ -175,7 +175,7 @@
         >
           <el-input v-model="form.price"></el-input>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           label="产品规格"
           :label-width="formLabelWidth"
           prop="specs"
@@ -189,7 +189,7 @@
             >
             </el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
 
       <div slot="footer" class="dialog-footer">
@@ -297,9 +297,6 @@ export default {
     return {
       // 用作表单绑定的内容
       form: {
-        // user_name: "",
-        // password: "",
-        //checkPass: "",
         productionDate: "",
         specs: "",
         shelfLife: "",
@@ -324,14 +321,14 @@ export default {
       ],
 
       formNewRules: {
-        productionDate: [
-          {
-            type: "data",
-            required: true,
-            message: "请选择生产日期",
-            trigger: "change",
-          },
-        ],
+        // productionDate: [
+        //   {
+        //     type: "data",
+        //     required: true,
+        //     message: "请选择生产日期",
+        //     trigger: "change",
+        //   },
+        // ],
         name: [
           {
             required: true,
@@ -352,27 +349,27 @@ export default {
             trigger: "blur",
           },
         ],
-        specs: [
-          {
-            //required: true,
-            message: "请输入商品规格",
-            trigger: "blur",
-          },
-        ],
-        manufacturer: [
-          {
-            required: true,
-            message: "请输入生产厂家",
-            trigger: "blur",
-          },
-        ],
-        shelfLife: [
-          {
-            required: true,
-            message: "请输入保质期",
-            trigger: "blur",
-          },
-        ],
+        // specs: [
+        //   {
+        //     //required: true,
+        //     message: "请输入商品规格",
+        //     trigger: "blur",
+        //   },
+        // ],
+        // manufacturer: [
+        //   {
+        //     required: true,
+        //     message: "请输入生产厂家",
+        //     trigger: "blur",
+        //   },
+        // ],
+        // shelfLife: [
+        //   {
+        //     required: true,
+        //     message: "请输入保质期",
+        //     trigger: "blur",
+        //   },
+        // ],
       },
       loading: true,
       tableData: [],
@@ -600,7 +597,7 @@ export default {
     shownData() {
       return this.tableData.map((item) => {
         return Object.assign(item, {
-          productionDate: moment(item.register_date).format("YYYY-MM-DD"),
+          productionDate: moment(item.productionDate).format("YYYY-MM-DD"),
         });
       });
     },

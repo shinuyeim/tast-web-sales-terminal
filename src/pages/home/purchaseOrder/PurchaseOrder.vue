@@ -42,31 +42,27 @@
         :data="shownData"
         style="width: 100%"
         :default-sort="{ prop: 'register_date', order: 'descending' }"
-      >
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="left" inline class="demo-table-expand">
-              <!-- <el-form-item label="订单编号">
-                <span>{{ props.row._id }}</span>
-              </el-form-item> -->
-              <!-- <el-form-item label="商品名称">
-                <span>{{ props.row.name }}</span>
-              </el-form-item> -->
-              <el-form-item label="所属商家">
-                <span>{{ props.row.shop }}</span>
-              </el-form-item>
-
-              <el-form-item label="规格">
-                <span>{{ props.row.shopId }}</span>
-              </el-form-item>
-            </el-form>
-          </template>
+        ><el-table-column
+          prop="_id"
+          label="订单编号"
+          min-width="100"
+          sortable
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="wholesaler"
+          label="商家"
+          min-width="100"
+          sortable
+          align="center"
+        ></el-table-column>
+        <!-- <el-table-column label="订单编号" prop="_id"> </el-table-column>
+        <el-table-column label="商品名称" prop="name"> </el-table-column> -->
+        <el-table-column label="单价" prop="price" width="200">
         </el-table-column>
-        <el-table-column label="订单编号" prop="_id"> </el-table-column>
-        <el-table-column label="商品名称" prop="name"> </el-table-column>
-        <el-table-column label="单价" prop="price" width="200"> </el-table-column>
-        <el-table-column label="数量" prop="count" width="200"> </el-table-column>
-        <el-table-column label="操作" width="200">
+        <el-table-column label="数量" prop="count" width="200">
+        </el-table-column>
+        <el-table-column label="操作" width="300">
           <template slot-scope="scope">
             <!-- 删除过程中，禁用其他操作 -->
             <el-button
@@ -85,6 +81,13 @@
               type="danger"
               size="small"
               >删除</el-button
+            >
+            <el-button
+              :disabled="showDeleteCheckbox"
+              @click="toPurchaseOrderItem([scope.row._id])"
+              type="primary"
+              size="small"
+              >详情</el-button
             >
           </template>
         </el-table-column>
@@ -190,6 +193,7 @@
 
 <script>
 // import tableData from "./merchantData.js";
+//import { mapMutations } from "vuex";
 import * as api from "@/api/index.js";
 import moment from "moment";
 import eachLimit from "async/eachLimit";
@@ -205,6 +209,7 @@ export default {
         // prices: "",
         // amounts: "",
       },
+      preventRepeat: false, //防止重复获取
       // 用作表单绑定的内容
       formNewRules: {
         phone: [
@@ -283,6 +288,7 @@ export default {
     this.getPurchaseOrder();
   },
   methods: {
+    // ...mapMutations(["SAVE_ORDER"]),
     // 新增/修改一个数据
     updateTableItem(item = {}) {
       // 检查是否有 id，有则更新，没有则新增
@@ -405,6 +411,7 @@ export default {
     },
     getPurchaseOrder() {
       this.loading = true;
+      this.preventRepeat = false;
       api
         .getPurchaseOrderList({
           offset: this.startIndex,
@@ -433,7 +440,10 @@ export default {
             type: "error",
           });
         })
-        .finally(() => (this.loading = false));
+        .finally(() => ((this.loading = false), (this.preventRepeat = false)));
+    },
+    toPurchaseOrderItem(id) {
+      this.$router.push({ name: "PurchaseOrderItem", query: { id: id } });
     },
   },
   computed: {
@@ -452,16 +462,4 @@ export default {
 </script>
 
 <style>
-.demo-table-expand {
-  font-size: 0;
-}
-.demo-table-expand label {
-  width: 90px;
-  color: #99a9bf;
-}
-.demo-table-expand .el-form-item {
-  margin-right: 0;
-  margin-bottom: 0;
-  width: 50%;
-}
 </style>
