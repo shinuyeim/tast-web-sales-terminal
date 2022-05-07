@@ -17,7 +17,7 @@
             v-if="!showDeleteCheckbox"
             @click="showDeleteCheckbox = true"
             type="danger"
-            >删除</el-button
+            >批量删除</el-button
           >
           <!-- 删除过程中，只出现确认删除按钮 -->
           <el-button
@@ -176,18 +176,18 @@
         <el-form-item
           label="批发商"
           :label-width="formLabelWidth"
-          prop="wholesaler"
+          prop="name"
         >
-          <el-input v-model="form.wholesaler"></el-input>
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
 
-        <el-form-item label="数量" :label-width="formLabelWidth" prop="amounts">
+        <!-- <el-form-item label="数量" :label-width="formLabelWidth" prop="amounts">
           <el-input v-model="form.amounts"></el-input>
         </el-form-item>
 
         <el-form-item label="价格" :label-width="formLabelWidth" prop="prices">
           <el-input v-model="form.prices"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item
           label="联系电话"
           :label-width="formLabelWidth"
@@ -266,20 +266,20 @@ export default {
             trigger: "blur",
           },
         ],
-        amounts: [
-          {
-            required: true,
-            message: "请选择数量",
-            trigger: "blur",
-          },
-        ],
-        prices: [
-          {
-            required: true,
-            message: "请输入价格",
-            trigger: "blur",
-          },
-        ],
+        // amounts: [
+        //   {
+        //     required: true,
+        //     message: "请选择数量",
+        //     trigger: "blur",
+        //   },
+        // ],
+        // prices: [
+        //   {
+        //     required: true,
+        //     message: "请输入价格",
+        //     trigger: "blur",
+        //   },
+        // ],
         address: [
           {
             required: true,

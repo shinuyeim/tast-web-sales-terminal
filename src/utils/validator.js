@@ -13,7 +13,7 @@ export function formValidatePhone(rule, value, callback) {
 
 export function formValidatePassword(rule, value, callback) {
   if (!value) {
-    return callback(new Error("不能为空"));
+    return callback(new Error("密码不能为空"));
   } else {
     const reg = /^(\w){6,16}$/;
     if (reg.test(value)) {
@@ -26,7 +26,7 @@ export function formValidatePassword(rule, value, callback) {
 
 export function formValidateUsername(rule, value, callback) {
   if (!value) {
-    return callback(new Error("不能为空"));
+    return callback(new Error("用户名不能为空"));
   } else {
     const reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){4,19}$/;
     if (reg.test(value)) {

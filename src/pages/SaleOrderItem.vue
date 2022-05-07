@@ -18,7 +18,7 @@
             v-if="!showDeleteCheckbox"
             @click="showDeleteCheckbox = true"
             type="danger"
-            >删除</el-button
+            >批量删除</el-button
           >
           <!-- <el-button
             v-if="!showDeleteCheckbox"

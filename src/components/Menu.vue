@@ -66,32 +66,32 @@
 // 对应的，我们需要在 menus 里加上 routerName，用来跳转
 // routerName 为对应的路由的路由名称
 const menus = [
-  { text: "概览", icon: "el-icon-monitor", routerName: "" },
+  //{ text: "概览", icon: "el-icon-monitor", routerName: "" },
   {
     text: "数据管理", // 父菜单名字
     icon: "el-icon-setting", // 父菜单图标
     subMenus: [
       // { text: "管理员信息", routerName: "Admin" },
-      { text: "商家信息", routerName: "Merchant" },
       { text: "顾客信息", routerName: "Customer" },
       { text: "商品信息", routerName: "Merchandise" },
       { text: "进货单信息", routerName: "PurchaseOrder" },
       { text: "销售单信息", routerName: "SaleOrder" },
+      { text: "生产厂家信息", routerName: "Merchant" },
     ], // 子菜单列表
   },
-  {
-    text: "数据图表",
-    icon: "el-icon-s-data",
-    subMenus: [
-      { text: "交易分析", routerName: "" },
-      { text: "用户分析", routerName: "" },
-    ],
-  },
-  {
-    text: "日志信息",
-    icon: "el-icon-message",
-    routerName: "", // 日志信息这里为空，则不会进行跳转
-  },
+  // {
+  //   text: "数据图表",
+  //   icon: "el-icon-s-data",
+  //   subMenus: [
+  //     { text: "交易分析", routerName: "" },
+  //     { text: "用户分析", routerName: "" },
+  //   ],
+  // },
+  // {
+  //   text: "日志信息",
+  //   icon: "el-icon-message",
+  //   routerName: "", // 日志信息这里为空，则不会进行跳转
+  // },
 ].map((x, i) => {
   // 添加 index，可用于默认展开 default-openeds 属性，和激活状态 default-active 属性的设置
   return {

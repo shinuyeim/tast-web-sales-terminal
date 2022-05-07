@@ -1,27 +1,43 @@
 <template>
-  <el-row :gutter="20" style="margin-top: 200px;">
-    <el-col :span="12" :offset="6">
-      <div class="grid-content bg-purple">
-        <el-card class="box-card">
-          <!-- model 绑定表单对象，rules 绑定表单规则，ref 用来校验规则 -->
-          <el-form :model="form" status-icon :rules="formRules" ref="form">
-            <!-- el-form-item 绑定表单样式，label 表单的名称，formLabelWidth 设置 label 的宽度, 设置 prop 来进行规则校验 -->
-            <el-form-item label="用户名" prop="user_name">
-              <el-input v-model="form.user_name"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="form.password" type="password" show-password></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" prop="checkPass">
-              <el-input v-model="form.checkPass" type="password" show-password></el-input>
-            </el-form-item>
-            <el-button type="primary" @click="toLogin">登录</el-button>
-            <el-button type="primary" @click="onSubmit">注册</el-button>
-          </el-form>
-        </el-card>
-      </div>
-    </el-col>
-  </el-row>
+  <body id="poster">
+    <el-row :gutter="20" style="margin-top: 200px">
+      <el-col :span="12" :offset="6">
+        <div class="grid-content bg-purple">
+          <!-- <h3 class="login_title">用户注册</h3> -->
+          <el-card class="box-card">
+            <!-- <span aria-posinset="" class="login_title">用户注册</span> -->
+            <h3 class="login_title">用户注册</h3>
+            <!-- model 绑定表单对象，rules 绑定表单规则，ref 用来校验规则 -->
+            <el-form :model="form" status-icon :rules="formRules" ref="form">
+              <!-- el-form-item 绑定表单样式，label 表单的名称，formLabelWidth 设置 label 的宽度, 设置 prop 来进行规则校验 -->
+              <el-form-item label="用户名" prop="user_name">
+                <el-input
+                  prefix-icon="el-icon-user"
+                  v-model="form.user_name"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="密码" prop="password">
+                <el-input
+                  v-model="form.password"
+                  type="password"
+                  show-password
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="确认密码" prop="checkPass">
+                <el-input
+                  v-model="form.checkPass"
+                  type="password"
+                  show-password
+                ></el-input>
+              </el-form-item>
+              <el-button type="primary" @click="toLogin">登录</el-button>
+              <el-button type="primary" @click="onSubmit">注册</el-button>
+            </el-form>
+          </el-card>
+        </div>
+      </el-col>
+    </el-row>
+  </body>
 </template>
 
 <script>
@@ -50,32 +66,32 @@ export default {
       form: {
         user_name: "",
         password: "",
-        checkPass: ""
+        checkPass: "",
       }, // 用作表单绑定的内容
       formRules: {
         user_name: [
-          { required: true, validator: formValidateUsername, trigger: "blur" }
+          { required: true, validator: formValidateUsername, trigger: "blur" },
         ],
         password: [
           { required: true, validator: formValidatePassword, trigger: "blur" },
-          { validator: validatePass, trigger: "blur" }
+          { validator: validatePass, trigger: "blur" },
         ],
         checkPass: [
           { required: true, message: "请再次输入密码", trigger: "change" },
-          { validator: validatePass2, trigger: "blur" }
-        ]
-      }
+          { validator: validatePass2, trigger: "blur" },
+        ],
+      },
     };
   },
   methods: {
     submitRegister(item = {}) {
       api
         .merchantRegister(item)
-        .then(async response => {
+        .then(async (response) => {
           if (201 === response.status) {
             this.$message({
               message: "Register success",
-              type: "success"
+              type: "success",
             });
             // 跳转到里页
             this.$router.push({ name: "Login" });
@@ -84,11 +100,11 @@ export default {
             throw err;
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
           this.$message({
             message: "Register failed",
-            type: "error"
+            type: "error",
           });
         });
     },
@@ -96,7 +112,7 @@ export default {
     onSubmit() {
       //   校验表单
       //   Element 表单校验规则配置，请查看https://element.eleme.cn/#/zh-CN/component/form
-      this.$refs["form"].validate(valid => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           // 校验通过
           // 设置用户名
@@ -109,10 +125,28 @@ export default {
     },
     toLogin() {
       this.$router.push({ name: "Login" });
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style>
+#poster {
+  background: url("../assets/background.jpg") no-repeat;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  position: fixed;
+}
+body {
+  margin: 0px;
+  padding: 0;
+}
+.login_title {
+  margin: 0px auto 40px auto;
+  text-align: center;
+  /* color: aqua; */
+  /* position: fixed; */
+}
 </style>

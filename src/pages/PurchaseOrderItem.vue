@@ -18,7 +18,7 @@
             v-if="!showDeleteCheckbox"
             @click="showDeleteCheckbox = true"
             type="danger"
-            >删除</el-button
+            >批量删除</el-button
           >
           <!-- <el-button
             v-if="!showDeleteCheckbox"
@@ -49,19 +49,11 @@
         highlight-current-row
         :data="shownData"
         style="width: 100%"
-        :default-sort="{ prop: '_id', order: 'descending' }"
+        :default-sort="{ prop: 'name', order: 'descending' }"
       >
-        <!-- <el-table-column prop="_id" label="id" width="100" sortable></el-table-column> -->
         <el-table-column
           prop="_id"
           label="ItemID"
-          min-width="180"
-          sortable
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="name"
-          label="商品名称"
           min-width="180"
           sortable
           align="center"
@@ -74,9 +66,16 @@
               @change="toggleChosenItem(scope.row._id)"
               style="margin-right: 5px"
             ></el-checkbox>
-            <span>{{ scope.row.name }}</span>
+            <span>{{ scope.row._id }}</span>
           </template>
         </el-table-column>
+        <el-table-column
+          prop="name"
+          label="商品名称"
+          min-width="180"
+          sortable
+          align="center"
+        ></el-table-column>
         <el-table-column
           prop="productionDate"
           label="生产日期"
@@ -217,27 +216,18 @@
       <!-- model 绑定表单对象，rules 绑定表单规则，ref 用来校验规则 -->
       <el-form :model="form" status-icon :rules="formUpdateRules" ref="form">
         <!-- el-form-item 绑定表单样式，label 表单的名称，formLabelWidth 设置 label 的宽度, 设置 prop 来进行规则校验 -->
-        <!-- 
         <el-form-item
-          label="商品名称"
-          :label-width="formLabelWidth"
-          prop="name"
-        >
-          <el-input v-model="form.name"></el-input>
-        </el-form-item> -->
-        <!-- <el-form-item
           label="生产日期"
           :label-width="formLabelWidth"
           prop="productionDate"
-        >  -->
-        <!-- 里面装载表单元素，这里装了个选择日期的组件，v-model 绑定选择值，value-format设置绑定值的格式，type 设置选择的范围，这里 date 表示到天 -->
-        <!-- <el-date-picker
+        >
+          <el-date-picker
             v-model="form.productionDate"
             value-format="yyyy-MM-dd"
             type="date"
             placeholder="请填写生产日期"
-          ></el-date-picker> -->
-        <!-- </el-form-item> -->
+          ></el-date-picker>
+        </el-form-item>
         <!-- <el-form-item
           label="保质期（月）"
           :label-width="formLabelWidth"
