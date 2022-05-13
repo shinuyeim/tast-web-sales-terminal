@@ -211,12 +211,11 @@
         >
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           label="生产日期"
           :label-width="formLabelWidth"
           prop="productionDate"
         >
-          <!-- 里面装载表单元素，这里装了个选择日期的组件，v-model 绑定选择值，value-format设置绑定值的格式，type 设置选择的范围，这里 date 表示到天 -->
           <el-date-picker
             v-model="form.productionDate"
             value-format="yyyy-MM-dd"
@@ -224,7 +223,7 @@
             placeholder="请填写生产日期"
             :picker-options="pickerOptions"
           ></el-date-picker>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item
           label="保质期（月）"
           :label-width="formLabelWidth"
@@ -242,13 +241,12 @@
         <el-form-item label="价格" :label-width="formLabelWidth" prop="price">
           <el-input v-model="form.price"></el-input>
         </el-form-item>
-
         <el-form-item
           label="产品规格"
           :label-width="formLabelWidth"
           prop="specs"
         >
-          <el-select v-model="value" placeholder="请选择">
+          <el-select v-model="form.specs" placeholder="请选择">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -383,14 +381,14 @@ export default {
       showDeleteCheckbox: false, // 是否批量删除
       chosenItem: [], // 选中的选项
       formUpdateRules: {
-        productionDate: [
-          {
-            type: "data",
-            required: true,
-            message: "请选择生产日期",
-            trigger: "change",
-          },
-        ],
+        // productionDate: [
+        //   {
+        //     type: "data",
+        //     required: true,
+        //     message: "请选择生产日期",
+        //     trigger: "change",
+        //   },
+        // ],
         name: [
           {
             required: true,
@@ -411,13 +409,13 @@ export default {
             trigger: "blur",
           },
         ],
-        specs: [
-          {
-            //required: true,
-            message: "请输入商品规格",
-            trigger: "blur",
-          },
-        ],
+        // specs: [
+        //   {
+        //     //required: true,
+        //     message: "请输入商品规格",
+        //     trigger: "blur",
+        //   },
+        // ],
         manufacturer: [
           {
             required: true,

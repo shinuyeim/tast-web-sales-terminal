@@ -192,13 +192,13 @@
           prop="register_date"
         >
           <!里面装载表单元素，这里装了个选择日期的组件，v-model 绑定选择值，value-format设置绑定值的格式，type 设置选择的范围，这里 date 表示到天 -->
-          <!-- <el-date-picker
+        <!-- <el-date-picker
             v-model="form.register_date"
             value-format="yyyy-MM-dd"
             type="date"
             placeholder="注册日期"
           ></el-date-picker>
-        </el-form-item> --> 
+        </el-form-item> -->
         <el-form-item
           label="用户名称"
           :label-width="formLabelWidth"
@@ -240,7 +240,7 @@ import eachLimit from "async/eachLimit";
 import {
   formValidatePassword,
   formValidateUsername,
-  formValidatePhone,
+formValidatePhone,
 } from "@/utils/validator";
 
 // 下面是 Vue 组件
@@ -268,7 +268,7 @@ export default {
         checkPass: "",
         name: "",
         address: "",
-        phone: ""
+        phone: "",
       }, // 用作表单绑定的内容
       formNewRules: {
         user_name: [
@@ -303,14 +303,14 @@ export default {
         ],
         address: [
           {
-            required: true,
+            required: false,
             message: "请输入你地址",
             trigger: "blur",
           },
         ],
         phone: [
           {
-            required: true,
+            required: false,
             validator: formValidatePhone,
             trigger: "blur",
           },

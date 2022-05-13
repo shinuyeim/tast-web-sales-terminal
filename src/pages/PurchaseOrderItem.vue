@@ -72,7 +72,7 @@
         <el-table-column
           prop="name"
           label="商品名称"
-          min-width="180"
+          min-width="80"
           sortable
           align="center"
         ></el-table-column>
@@ -114,12 +114,14 @@
           min-width="100"
           align="center"
         ></el-table-column>
-        <!-- <el-table-column
-          prop="totalPrice"
-          label="总价"
-          min-width="100"
-          align="center"
-        ></el-table-column> -->
+        <el-table-column label="小计"
+          ><template slot-scope="scope">
+            {{
+              (scope.row.sum = scope.row.price * scope.row.amounts)
+                | keepTwoNum
+            }}元
+          </template>
+        </el-table-column>
 
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
@@ -273,6 +275,10 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- <div style="text-align: right; line-height: 30px; margin-right: 119px"> -->
+      <!-- 合计：<input v-model="sum" :disabled="disabled"> -->
+      <!-- 合计：<span>{{ this.sumMoney.toFixed(2) }}元</span> -->
+    <!-- </div> -->
   </div>
 </template>
 
@@ -294,8 +300,6 @@ export default {
         manufacturer: "",
         price: "",
         name: "",
-        amount: "",
-        totalPrice: "",
         merchandises: "",
         purchaseOrder: "",
         purchaseOrderID: "",
@@ -337,6 +341,7 @@ export default {
       loading: true,
       tableData: [],
       totalCount: 0,
+      //totalPrice: 0,
       dialogFormNewVisible: false, // 弹窗是否出现
       dialogFormUpdateVisible: false, // 弹窗是否出现
       currentPage: 1,
@@ -590,6 +595,7 @@ export default {
             this.getMerchandies(orditem);
           }
           this.tableData = itemList;
+          this.totalCount = jsonData.metadata.Total;
           //console.log(this.tableData);
         })
         .catch((error) => {
@@ -613,8 +619,22 @@ export default {
         });
       });
     },
+    //表格中的金额合计总价格
+    sumMoney() {
+      return this.tableData
+        .map((row) => row.amounts * row.price)
+        .reduce((acc, cur) => parseFloat(cur) + acc, 0);
+    },
+  },
+  filters: {
+    keepTwoNum(value) {
+      value = Number(value);
+      return value.toFixed(2);
+    },
   },
 };
 </script>
  
 <style></style>
+
+       

@@ -115,6 +115,14 @@
           min-width="100"
           align="center"
         ></el-table-column>
+        <el-table-column label="小计"
+          ><template slot-scope="scope">
+            {{
+              (scope.row.sum = scope.row.price * scope.row.amounts)
+                | keepTwoNum
+            }}元
+          </template>
+        </el-table-column>
         <!-- <el-table-column
           prop="totalPrice"
           label="总价"
@@ -255,22 +263,6 @@
         <el-form-item label="价格" :label-width="formLabelWidth" prop="price">
           <el-input v-model="form.price"></el-input>
         </el-form-item>
-
-        <!-- <el-form-item
-          label="产品规格"
-          :label-width="formLabelWidth"
-          prop="specs"
-        >
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item> -->
         <el-form-item label="数量" :label-width="formLabelWidth" prop="amounts">
           <el-input v-model="form.amounts"></el-input>
         </el-form-item>
@@ -283,6 +275,10 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- <div style="text-align: right; line-height: 30px; margin-right: 119px"> -->
+      <!-- 合计：<input v-model="sum" :disabled="disabled"> -->
+      <!-- 合计：<span>{{ this.sumMoney.toFixed(2) }}元</span> -->
+    <!-- </div> -->
   </div>
 </template>
 
@@ -540,7 +536,7 @@ export default {
       this.currentPage = currentPage;
       this.getMerchandisesItem();
     },
-    getMerchandies(orditem) { 
+    getMerchandies(orditem) {
       const merchandiseID = orditem.merchandises;
       api
         .getMerchandisesInfo(merchandiseID)
@@ -597,7 +593,8 @@ export default {
             this.getMerchandies(orditem);
           }
           this.tableData = itemList;
-          console.log(this.tableData);
+          this.totalCount = jsonData.metadata.Total;
+          //console.log(this.tableData);
         })
         .catch((error) => {
           console.error(error);
@@ -619,6 +616,12 @@ export default {
           productionDate: moment(item.productionDate).format("YYYY-MM-DD"),
         });
       });
+    },
+    //表格中的金额合计总价格
+    sumMoney() {
+      return this.tableData
+        .map((row) => row.amounts * row.price)
+        .reduce((acc, cur) => parseFloat(cur) + acc, 0);
     },
   },
 };

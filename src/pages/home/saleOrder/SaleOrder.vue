@@ -79,10 +79,10 @@
         ></el-table-column>
         <!-- <el-table-column label="订单编号" prop="_id"> </el-table-column>
         <el-table-column label="商品名称" prop="name"> </el-table-column> -->
-        <el-table-column label="单价" prop="price" width="70">
+        <!-- <el-table-column label="单价" prop="price" width="70">
         </el-table-column>
         <el-table-column label="数量" prop="count" width="70">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="操作" width="220">
           <template slot-scope="scope">
             <!-- 删除过程中，禁用其他操作 -->
@@ -443,6 +443,7 @@ export default {
             this.getCustomer(orditem);
           }
           this.tableData = itemList;
+          this.totalCount = jsonData.metadata.Total;
           //console.log(this.tableData);
         })
         .catch((error) => {
